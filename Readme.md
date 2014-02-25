@@ -114,7 +114,7 @@ while (items.length) {
 
 [crockfordconvention]: http://javascript.crockford.com/code.html
 
-## Use lowerCamelCase for variables, properties and function names
+## Use lowerCamelCase 
 
 Variables, properties and function names should use `lowerCamelCase`.  They
 should also be descriptive. 
@@ -149,7 +149,8 @@ function bank_Account(){
 }
 ```
 
-## Avoid Single character variables except for indexes or very simple functions/callbacks.
+## Avoid Single character variables 
+except for indexes or very simple functions/callbacks.
 
 *Right:*
 ```js
@@ -165,7 +166,7 @@ function(i, j, k){
 
 ## Avoid uncommon abbreviations
 
-## If you abbreviate stay consistent with that abbreviation - (I struggle with this)
+If you abbreviate stay consistent with that abbreviation - (I struggle with this)
 
 ## Use UPPERCASE for Constants
 
