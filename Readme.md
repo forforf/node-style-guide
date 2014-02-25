@@ -395,7 +395,7 @@ var closure = function(anotherFn){
 ```
 
 
-## Pseudo-anonymous va anonymous functions.
+## Pseudo-anonymous vs anonymous functions.
 
 It's acceptable to name what would otherwise be an anonymous function if 
 there's a compelling need. For example, debugging or other referencing.
