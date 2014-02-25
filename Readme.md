@@ -1,4 +1,4 @@
-# Node.js Style Guide
+# Forforf Javascript Style Guide (fork of [node-style-guide](https://github.com/felixge/node-style-guide))
 
 This is a guide for writing consistent and aesthetically pleasing node.js code.
 It is inspired by what is popular within the community, and flavored with some
@@ -11,7 +11,7 @@ according to your preferences.
 
 ![Creative Commons License](http://i.creativecommons.org/l/by-sa/3.0/88x31.png)
 
-## 2 Spaces for indention
+## 2 Spaces for indention and no trailing whitespace
 
 Use 2 spaces for indenting your code and swear an oath to never mix tabs and
 spaces - a special kind of hell is awaiting you otherwise.
@@ -19,13 +19,7 @@ spaces - a special kind of hell is awaiting you otherwise.
 ## Newlines
 
 Use UNIX-style newlines (`\n`), and a newline character as the last character
-of a file. Windows-style newlines (`\r\n`) are forbidden inside any repository.
-
-## No trailing whitespace
-
-Just like you brush your teeth after every meal, you clean up any trailing
-whitespace in your JS files before committing. Otherwise the rotten smell of
-careless neglect will eventually drive away contributors and/or co-workers.
+of a file. Windows-style newlines (`\r\n`) should be cleaned up as soon as they are noticed.
 
 ## Use Semicolons
 
@@ -80,13 +74,15 @@ if (true)
 }
 ```
 
-Also, notice the use of whitespace before and after the condition statement.
+Also, notice the use of **single space** before and after the condition statement.
 
 ## Declare one variable per var statement
 
 Declare one variable per var statement, it makes it easier to re-order the
 lines. Ignore [Crockford][crockfordconvention] on this, and put those
 declarations wherever they make sense.
+Forforf's reason: Makes it easier to move things around during refactoring when that 
+tidy little function balloons into spaghetti.
 
 *Right:*
 
@@ -120,8 +116,7 @@ while (items.length) {
 ## Use lowerCamelCase for variables, properties and function names
 
 Variables, properties and function names should use `lowerCamelCase`.  They
-should also be descriptive. Single character variables and uncommon
-abbreviations should generally be avoided.
+should also be descriptive. 
 
 *Right:*
 
@@ -142,16 +137,34 @@ Class names should be capitalized using `UpperCamelCase`.
 *Right:*
 
 ```js
-function BankAccount() {
+function BankAccount(){
 }
 ```
 
 *Wrong:*
 
 ```js
-function bank_Account() {
+function bank_Account(){
 }
 ```
+
+## Avoid Single character variables except for indexes or very simple functions/callbacks.
+
+*Right:*
+```js
+myArray.map( function(i){ i.trim() }
+```
+
+*Wrong:*
+```js
+function(i, j, k){
+//
+}
+```
+
+## Avoid uncommon abbreviations
+
+## If you abbreviate stay consistent with that abbreviation - (I struggle with this)
 
 ## Use UPPERCASE for Constants
 
@@ -186,8 +199,11 @@ File.fullPermissions = 0777;
 
 ## Object / Array creation
 
-Use trailing commas and put *short* declarations on a single line. Only quote
-keys when your interpreter complains:
+Put *short* declarations on a single line.
+
+Only quote keys when your interpreter complains.
+
+Do not use trailing commas. Forforf reason: JSON consistency
 
 *Right:*
 
@@ -236,11 +252,26 @@ if (a == '') {
 
 [comparisonoperators]: https://developer.mozilla.org/en/JavaScript/Reference/Operators/Comparison_Operators
 
-## Use multi-line ternary operator
-
-The ternary operator should not be used on a single line. Split it up into multiple lines instead.
+## The ternary operator should only be used on a single line
+Forforf reason: Single line is more readable plus if multiline is needed, then just make it explicit
+with if/else.
 
 *Right:*
+
+```js
+var foo = (a === b) ? 1 : 2;
+```
+
+```js
+var foo;
+if (a === b) {
+  foo = 1;
+} else {
+  foo = 2
+}
+```
+
+*Wrong:*
 
 ```js
 var foo = (a === b)
@@ -248,11 +279,6 @@ var foo = (a === b)
   : 2;
 ```
 
-*Wrong:*
-
-```js
-var foo = (a === b) ? 1 : 2;
-```
 
 ## Do not extend built-in prototypes
 
@@ -356,10 +382,22 @@ function isPercentage(val) {
 }
 ```
 
-## Name your closures
+## Closures
+Closures are encouraged
 
-Feel free to give your closures a name. It shows that you care about them, and
-will produce better stack traces, heap and cpu profiles.
+```js
+var closure = function(anotherFn){
+  var closureVariable = 'Hi, this variable can be used by anotherFn';
+  anotherFn( closureVariable );
+}
+```
+
+
+## Pseudo-anonymous va anonymous functions.
+
+It's acceptable to name what would otherwise be an anonymous function if 
+there's a compelling need. For example, debugging or other referencing.
+
 
 *Right:*
 
@@ -377,9 +415,18 @@ req.on('end', function() {
 });
 ```
 
-## No nested closures
+## Complex anonymous functions.
 
-Use closures, but don't nest them. Otherwise your code will become a mess.
+In general, try to create a named functions when the function is complex, rather than 
+inserting the function code in the argument.
+It is ok to skip this rule if the function argument is more important than the outer function
+I know I need examples, but I know what I mean.
+
+
+## No nested anonymous functions
+
+It's ok to use them but don't nest them. Otherwise your code will become a mess.
+This is also a case where naming a function is helpful.
 
 *Right:*
 
@@ -402,6 +449,27 @@ setTimeout(function() {
   });
 }, 1000);
 ```
+
+## Arguments and spaces (forforf)
+In general, I prefer no spaces `var x = aFunction(anArg);` However, if the argument is
+a function, or some other complex entity, then there will be spaces around it.
+
+
+```js
+var betterReadability = function myFunction( thatusesAResult(ofAnotherFn) );
+```
+
+```js
+var easierToRead = function otherFunction( {some: 'obj', maybe: 'A config'} );
+```
+
+## Argument order of precedence for functions
+1) Arguments that are integral component of the return value
+2) Required arguments needed by the function
+3) Arguments that influence the outcome (e.g., options)
+
+Note: I've not followed this standard consistently enough
+
 
 ## Use slashes for comments
 
